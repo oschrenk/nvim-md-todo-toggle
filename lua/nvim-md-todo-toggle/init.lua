@@ -4,6 +4,41 @@ M.config = {
   marker = { " ", "x" },
 }
 
+-- Lua has a few magix characters we need to escape
+-- ^ — Matches the beginning of the string.
+-- $ — Matches the end of the string.
+-- % — Escape character, used to escape the magic characters.
+-- . — Matches any character (except a newline by default).
+-- * — Matches 0 or more occurrences of the previous character/class.
+-- + — Matches 1 or more occurrences of the previous character/class.
+-- - — Matches 0 or more occurrences (the least possible) of the previous character/class (non-greedy).
+-- ? — Matches 0 or 1 occurrence of the previous character/class.
+-- [ and ] — Used to define a character class.
+-- () — Captures the matched substring.
+M.magic = {
+  "^",
+  "$",
+  "%",
+  ".",
+  "*",
+  "+",
+  "-",
+  "?",
+  "[",
+  "]",
+  "(",
+  ")",
+}
+
+M.contains = function(array, element)
+  for _, value in ipairs(array) do
+    if value == element then
+      return true
+    end
+  end
+  return false
+end
+
 M.setup = function(args)
   M.config = vim.tbl_deep_extend("force", M.config, args or {})
 
@@ -18,7 +53,10 @@ M.toggle = function()
   local currentStateIdx = -1
   local currentMarker = ""
   for i, state in ipairs(M.config.marker) do
-    local isInState, _ = string.find(line, "- %[" .. state .. "%]")
+    local escapedState = M.contains(M.magic, state) and "%" .. state or state
+    local needle = "- %[" .. escapedState .. "%]"
+    print(needle)
+    local isInState, _ = string.find(line, needle)
     count = count + 1
     if isInState then
       currentStateIdx = i
