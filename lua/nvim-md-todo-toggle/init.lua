@@ -55,7 +55,6 @@ M.toggle = function()
   for i, state in ipairs(M.config.marker) do
     local escapedState = M.contains(M.magic, state) and "%" .. state or state
     local needle = "- %[" .. escapedState .. "%]"
-    print(needle)
     local isInState, _ = string.find(line, needle)
     count = count + 1
     if isInState then
