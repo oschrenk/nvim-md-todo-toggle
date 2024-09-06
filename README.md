@@ -25,7 +25,7 @@ return {
   },
   config = function()
     require("nvim-md-todo-toggle").setup({
-      marker = "x",
+      marker = { " ", "x", "-" },
     })
   end,
 }

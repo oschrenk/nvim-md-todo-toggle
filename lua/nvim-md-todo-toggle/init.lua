@@ -1,7 +1,7 @@
 local M = {}
 
 M.config = {
-  marker = "x",
+  marker = { " ", "x" },
 }
 
 M.setup = function(args)
@@ -13,15 +13,24 @@ end
 
 M.toggle = function()
   local line = vim.api.nvim_get_current_line()
-  local opened, _ = string.find(line, "- %[ %]")
-  local closed, _ = string.find(line, "- %[" .. M.config.marker .. "%]")
+
+  local count = 0
+  local currentStateIdx = -1
+  local currentMarker = ""
+  for i, state in ipairs(M.config.marker) do
+    local isInState, _ = string.find(line, "- %[" .. state .. "%]")
+    count = count + 1
+    if isInState then
+      currentStateIdx = i
+      currentMarker = state
+    end
+  end
+  local nextStateIdx = currentStateIdx == count and 1 or currentStateIdx + 1
+  local nextMarker = M.config.marker[nextStateIdx]
+
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
 
-  if opened then
-    vim.cmd(":.,.s/\\[ \\]/[" .. M.config.marker .. "]/")
-  elseif closed then
-    vim.cmd(":.,.s/\\[" .. M.config.marker .. "\\]/[ ]/")
-  end
+  vim.cmd(":.,.s/\\[" .. currentMarker .. "\\]/[" .. nextMarker .. "]/")
   vim.cmd(":noh")
   vim.cmd(":call cursor(" .. cursor_pos[1] .. ", " .. cursor_pos[2] + 1 .. ")")
 end
