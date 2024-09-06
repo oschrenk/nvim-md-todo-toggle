@@ -1,4 +1,4 @@
-# NeoVim Markdown style Todo Toggler
+# Neovim Markdown Todo Toggler
 
 ## Installation
 
