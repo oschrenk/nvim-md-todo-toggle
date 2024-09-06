@@ -7,8 +7,8 @@ M.config = {
 M.setup = function(args)
   M.config = vim.tbl_deep_extend("force", M.config, args or {})
 
-  vim.api.nvim_create_user_command("TDToggle", M.toggle, { bang = true, desc = "Toggle between - [ ] and - [x]" })
-  vim.api.nvim_create_user_command("TDAdd", M.add, { bang = true, desc = "Inject a todo item in the next line" })
+  vim.api.nvim_create_user_command("TDToggle", M.toggle, { bang = true, desc = "Toggle between todo states" })
+  vim.api.nvim_create_user_command("TDAdd", M.add, { bang = true, desc = "Add a new todo item to the next line" })
 end
 
 M.toggle = function()
