@@ -1,5 +1,4 @@
-TODO
-====
+# TODO
 
 - [ ] Run first test
 - [x] Lorem ipsum dolor
