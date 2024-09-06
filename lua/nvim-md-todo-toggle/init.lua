@@ -1,22 +1,14 @@
 local M = {}
 
 M.config = {
-  marker = "x"
+  marker = "x",
 }
 
 M.setup = function(args)
   M.config = vim.tbl_deep_extend("force", M.config, args or {})
 
-  vim.api.nvim_create_user_command(
-    'TDToggle',
-    M.toggle,
-    { bang = true, desc = 'Toggle between - [ ] and - [x]' }
-  )
-  vim.api.nvim_create_user_command(
-    'TDAdd',
-    M.add,
-    { bang = true, desc = 'Inject a todo item in the next line' }
-  )
+  vim.api.nvim_create_user_command("TDToggle", M.toggle, { bang = true, desc = "Toggle between - [ ] and - [x]" })
+  vim.api.nvim_create_user_command("TDAdd", M.add, { bang = true, desc = "Inject a todo item in the next line" })
 end
 
 M.toggle = function()
@@ -26,9 +18,9 @@ M.toggle = function()
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
 
   if opened then
-    vim.cmd(':.,.s/\\[ \\]/[' .. M.config.marker .. ']/')
+    vim.cmd(":.,.s/\\[ \\]/[" .. M.config.marker .. "]/")
   elseif closed then
-    vim.cmd(':.,.s/\\[' .. M.config.marker .. '\\]/[ ]/')
+    vim.cmd(":.,.s/\\[" .. M.config.marker .. "\\]/[ ]/")
   end
   vim.cmd(":noh")
   vim.cmd(":call cursor(" .. cursor_pos[1] .. ", " .. cursor_pos[2] + 1 .. ")")
