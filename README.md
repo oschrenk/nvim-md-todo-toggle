@@ -2,12 +2,22 @@
 
 ## Installation
 
-Packer:
-```
-  use { "unamatasanatarai/nvim-md-todo-toggle" }
-```
+Lazy:
 
-
+```
+return {
+  "oschrenk/nvim-md-todo-toggle",
+  keys = {
+    {
+      "<C-r>",
+      function()
+        require("nvim-md-todo-toggle").toggle()
+      end,
+      desc = "Toggle todo",
+    },
+  },
+}
+```
 
 ## Usage
 
